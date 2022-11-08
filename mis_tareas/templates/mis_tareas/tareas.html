@@ -1,0 +1,40 @@
+{% extends 'mis_tareas/base.html' %}
+
+{% block content %}
+<ul class="list-group">
+    {% if context %}
+    {% for l in context %}
+    <li class="list-group-item">
+        <div class="d-flex justify-content-between">
+            <div>
+                <h3>{{l.titulo}}</h3>
+                <h2>{{l.importancia}}</h2>
+            </div>
+            <form action="{% url 'eliminar' %}" method="post">
+                {% csrf_token %}
+                <input type="text" name="titulo" value="{{l.titulo}}" hidden>
+                <button class="btn"><i class="bi bi-x-lg"></i></button>
+            </form>
+        </div>
+        <p>{{l.descr}}</p>
+
+    </li>
+    {% endfor %}
+    {% else %}
+    <h1>No hay tareas</h1>
+    {% endif%}
+</ul>
+
+<form action="{% url 'crear' %}" method="post">
+    {% csrf_token %}
+    <input class="input" type="text" name="titulo" placeholder="Titulo">
+    <input class="input" type="text" name="descripcion" placeholder="Desripcion">
+    <select class="select" name="importancia">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+    </select>
+    <button class="btn btn-primary">Crear</button>
+</form>
+
+{% endblock %}
